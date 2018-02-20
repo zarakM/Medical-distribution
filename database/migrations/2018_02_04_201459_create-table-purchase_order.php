@@ -13,13 +13,9 @@ class CreateTablePurchaseOrder extends Migration
      */
     public function up()
     {
-        Schema::table('purchaseOrders', function (Blueprint $table) {
+        Schema::create('purchase_orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('quanitity');
-            $table->integer('tPrice');
-            $table->string('expiry');
-            $table->integer('bonus');
-            $table->string('batch');
+            $table->integer('company_id');
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ class CreateTablePurchaseOrder extends Migration
      */
     public function down()
     {
-        Schema::Drop('purchaseOrders');
+        Schema::Drop('purchase_orders');
     }
 }

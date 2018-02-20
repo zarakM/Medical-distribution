@@ -13,9 +13,16 @@ class CreateTableCustomer extends Migration
      */
     public function up()
     {
-        Schema::table('customers', function (Blueprint $table) {
-            //
+        Schema::create('customers', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('address');
+            $table->string('phone_no');
+            $table->string('mobile_no');
+            $table->string('area_id')->default(0);
+            $table->timestamps();
         });
+
     }
 
     /**
@@ -25,6 +32,6 @@ class CreateTableCustomer extends Migration
      */
     public function down()
     {
-        Schema::drop('customerDeliverDetails');
+        Schema::drop('customers');
     }
 }

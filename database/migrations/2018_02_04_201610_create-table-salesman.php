@@ -13,11 +13,12 @@ class CreateTableSalesman extends Migration
      */
     public function up()
     {
-        Schema::table('salesmans', function (Blueprint $table) {
+        Schema::create('salesmen', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('area_id');
             $table->string('name');
-            $table->string('adress');
-            $table->string('mobileNo');
+            $table->string('mobile_no');
+            $table->timestamps();
 
         });
     }
@@ -29,6 +30,6 @@ class CreateTableSalesman extends Migration
      */
     public function down()
     {
-        Schema::drop('salesmans');
+        Schema::drop('salesmen');
     }
 }

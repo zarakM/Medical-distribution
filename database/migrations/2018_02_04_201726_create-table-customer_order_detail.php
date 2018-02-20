@@ -13,8 +13,9 @@ class CreateTableCustomerOrderDetail extends Migration
      */
     public function up()
     {
-        Schema::table('customerOrderDetails', function (Blueprint $table) {
+        Schema::create('customer_order_details', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('customer_order_id');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ class CreateTableCustomerOrderDetail extends Migration
      */
     public function down()
     {
-        Schema::drop('customerOrderDetails');
+        Schema::drop('customer_order_details');
     }
 }

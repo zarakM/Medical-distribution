@@ -13,8 +13,14 @@ class CreateTableProductDetail extends Migration
      */
     public function up()
     {
-        Schema::table('productDetails', function (Blueprint $table) {
-            //
+        Schema::create('product_details', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('batch_no',50)->unique();
+            $table->string('strength');
+            $table->integer('pack');
+            $table->string('expiry');
+            $table->integer('product_id');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +31,6 @@ class CreateTableProductDetail extends Migration
      */
     public function down()
     {
-        Schema::drop('customerDeliverDetails');
+        Schema::drop('product_Details');
     }
 }

@@ -13,8 +13,11 @@ class CreateTableCustomerOrder extends Migration
      */
     public function up()
     {
-        Schema::table('customerOrders', function (Blueprint $table) {
+        Schema::create('customer_orders', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('salesman_id');
+            $table->integer('customer_id');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +28,6 @@ class CreateTableCustomerOrder extends Migration
      */
     public function down()
     {
-        Schema::drop('customerOrders');
+        Schema::drop('customer_orders');
     }
 }

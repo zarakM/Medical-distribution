@@ -13,8 +13,10 @@ class CreateTableArea extends Migration
      */
     public function up()
     {
-        Schema::table('areas', function (Blueprint $table) {
-            
+        Schema::create('areas', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->integer('city_id')->default(0);
         });
     }
 
