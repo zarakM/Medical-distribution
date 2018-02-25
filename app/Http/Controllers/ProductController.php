@@ -61,9 +61,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $product = ProductDetail::with('product')->get();
+        return view('layouts.products.view_product',['product'=>$product]);
     }
 
     /**
@@ -84,9 +85,14 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $productDetail = ProductDetail::find($request->input('id'));
+        $productDetail->strength = $request->input('strength');
+        $productDetail->pack = $request->input('pack');
+        $productDetail->expiry = $request->input('expiry');
+        $productDetail->save();
+        return redirect()->route('viewproducts');
     }
 
     /**
@@ -97,6 +103,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ProductDetail=  ProductDetail::find($id);
+        $ProductDetail->delete();
+        return back();
     }
 }

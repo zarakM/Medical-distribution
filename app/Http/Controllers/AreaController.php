@@ -50,9 +50,11 @@ class AreaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $area =City::with('areas')->get();
+        return view('layouts.showAllArea',['area'=>$area]);
+    
     }
 
     /**
@@ -63,7 +65,6 @@ class AreaController extends Controller
      */
     public function edit($id)
     {
-        //
     }
 
     /**
@@ -86,6 +87,8 @@ class AreaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $salesman = Area::find($id);
+        $salesman->delete();
+        return back();
     }
 }

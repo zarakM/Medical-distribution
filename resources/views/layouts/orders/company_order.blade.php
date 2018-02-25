@@ -2,17 +2,11 @@
 <br>
 <div class="container">
     <div class="row">
-        <h4> Company Order</h4>
+        <h4> Purchase Order</h4>
 
     </div> 
 <br>
  <form method="post" action="{{route('save_purchase_order')}}">
-  <div class="form-group row">
-    <label for="inputEmail3" class="col-sm-2 col-form-label">Company Name</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" name="company_name" placeholder="company">
-    </div>
-  </div>
 
   <div class="form-group row">
     <label for="inputPassword3" class="col-sm-2 col-form-label">Batch No</label>
@@ -52,7 +46,8 @@
 
   <div class="form-group row">
     <div class="col-sm-10">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" name="more" value="yes" class="btn btn-primary">Add More</button>
+      <button type="submit" name="more" value="no" class="btn btn-primary">Completed</button>
     </div>
   </div>
 </form>

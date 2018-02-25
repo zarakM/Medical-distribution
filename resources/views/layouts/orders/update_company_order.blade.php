@@ -1,54 +1,57 @@
 @include('layouts.master')
-
 <br>
 <div class="container">
-<h4> Customer Order</h4> 
-<br>
+    <div class="row">
+        <h4> Purchase Order</h4>
 
- <form method="post" action="{{route('save_customer_order')}}">
+    </div> 
+<br>
+ <form method="post" action="{{route('update_purchase_order')}}">
+  <input type="text" class="form-control" name="id" value="{{ $_GET['id'] }}" hidden="yes">
+  <input type="text" class="form-control" name="ids" value="{{ $_GET['ids'] }}" hidden="yes">
+
 
   <div class="form-group row">
     <label for="inputPassword3" class="col-sm-2 col-form-label">Batch No</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="batch" placeholder="batch">
+      <input type="text" class="form-control" name="batch" value="{{ $_GET['batch'] }}" disabled>
     </div>
   </div>
 
     <div class="form-group row">
     <label for="inputPassword3" class="col-sm-2 col-form-label">Quantity</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="quantity" placeholder="Quantity">
+      <input type="text" class="form-control" name="quantity" value="{{ $_GET['quantity'] }}">
     </div>
   </div>
 
     <div class="form-group row">
     <label for="inputPassword3" class="col-sm-2 col-form-label">Trade Price</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="trade" placeholder="Trade">
+      <input type="text" class="form-control" name="trade" value="{{ $_GET['trade'] }}">
     </div>
   </div>
 
     <div class="form-group row">
     <label for="inputPassword3" class="col-sm-2 col-form-label">Retail Price</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="retail" placeholder="Retail">
+      <input type="text" class="form-control" name="retail" value="{{ $_GET['retail'] }}">
     </div>
   </div>
 
   <div class="form-group row">
     <label for="inputPassword3" class="col-sm-2 col-form-label">Bonus</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="bonus" placeholder="Bonus">
+      <input type="text" class="form-control" name="bonus" value="{{ $_GET['bonus'] }}">
     </div>
   </div>
   {{csrf_field()}}
-  <br>
 
   <div class="form-group row">
     <div class="col-sm-10">
-      <button type="submit" name="more" value="yes" class="btn btn-primary">Add More</button>
-      <button type="submit" name="more" value="no" class="btn btn-success">Completed</button>
+      <button type="submit" name="more" value="yes" class="btn btn-primary">Update</button>
     </div>
   </div>
-
 </form>
+
+</div>

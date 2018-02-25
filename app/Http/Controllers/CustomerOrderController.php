@@ -26,9 +26,9 @@ class CustomerOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -39,8 +39,8 @@ class CustomerOrderController extends Controller
      */
     public function store(Request $request)
     {
+        if (($request->input('more'))=="details"){
         $customerName= Customer::where('name',$request->input('customer_name'))->first();
-        $productDetail= ProductDetail::where('batch_no',$request->input('batch'))->first();
         $salesman= Salesman::where('name',$request->input('salesman_name'))->first();
 
         $customerOrder= new CustomerOrder();
@@ -49,19 +49,41 @@ class CustomerOrderController extends Controller
         $customerOrder->save();
         $insertedId = $customerOrder->id;
 
-        $f_customerOrder= CustomerOrder::find($insertedId)->first();
+        $f_customerOrder= CustomerOrder::find($insertedId);
         $orderDetail = new CustomerOrderDetail();
         $orderDetail->customer_order()->associate($f_customerOrder);
         $orderDetail->save();
+        return view('layouts.orders.customer_order');
+        }
+        
+        if (($request->input('more'))=="yes")
+        {
+        $productDetail= ProductDetail::where('batch_no',$request->input('batch'))->first();
 
-        $insId = $orderDetail->id;
-        $f_customerDetail = CustomerOrderDetail::find($insId)->first();
+        $insId = CustomerOrderDetail::all()->last()->id;
+        $f_customerDetail = CustomerOrderDetail::find($insId);
         $quantity= $request->input('quantity');
         $trade_price= $request->input('trade');
         $retail_price= $request->input('retail');
         $bonus= $request->input('bonus');
         $f_customerDetail->product_details()->attach($productDetail->id,['quantity'=>$quantity,'trade_price'=>$trade_price,'retail_price'=>$retail_price,'bonus'=>$bonus]);
         $f_customerDetail->save();
+        return view('layouts.orders.customer_order');
+        }
+        if (($request->input('more'))=="no")
+        {
+            $productDetail= ProductDetail::where('batch_no',$request->input('batch'))->first();
+
+        $insId = CustomerOrderDetail::all()->last()->id;
+        $f_customerDetail = CustomerOrderDetail::find($insId);
+        $quantity= $request->input('quantity');
+        $trade_price= $request->input('trade');
+        $retail_price= $request->input('retail');
+        $bonus= $request->input('bonus');
+        $f_customerDetail->product_details()->attach($productDetail->id,['quantity'=>$quantity,'trade_price'=>$trade_price,'retail_price'=>$retail_price,'bonus'=>$bonus]);
+        $f_customerDetail->save();
+            return view('index');
+        }
     }
 
     /**
@@ -70,9 +92,10 @@ class CustomerOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $cOrder = CustomerOrderDetail::all();
+        return view('layouts.orders.view_customer_order',['order'=>$cOrder]);
     }
 
     /**
@@ -93,9 +116,19 @@ class CustomerOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $customerOrderDetail = CustomerOrderDetail::find($request->input('id'));
+
+        $quantity= $request->input('quantity');
+        $trade_price= $request->input('trade');
+        $retail_price= $request->input('retail');
+        $bonus= $request->input('bonus');
+        $ids= $request->input('ids');
+
+        $customerOrderDetail->product_details()->updateExistingPivot($ids,['quantity'=>$quantity,'trade_price'=>$trade_price,'retail_price'=>$retail_price,'bonus'=>$bonus]);
+
+        return redirect()->route('viewCustomerOrder');
     }
 
     /**
@@ -104,8 +137,10 @@ class CustomerOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $customerOrder = CustomerOrderDetail::find($request->input('id'));
+        $customerOrder->product_details()->detach($request->input('ids'));
+        return back();
     }
 }

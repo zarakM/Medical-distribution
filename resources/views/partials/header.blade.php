@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Pharmacy</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,7 +14,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href=" {{route('registercompany')}}">Register Compaines</a>
-                    <a class="dropdown-item" href="{{route('registredcompanies')}}">View registared companies</a>
+                    <a class="dropdown-item" href="{{route('viewcompanies')}}">View Registered Companies</a>
 
                 </div>
             </li>
@@ -71,13 +71,26 @@
                 </div>
             </li>
 
-                        <li class="nav-item dropdown" style=" float: right;">
+            <li class="nav-item dropdown" style=" float: right;">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    View Orders
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href=" {{route('viewCompanyOrder')}}">Company Orders</a>
+                    <a class="dropdown-item" href="{{route('viewCustomerOrder')}}">Customer Orders</a>
+
+                </div>
+            </li>
+
+
+            <li class="nav-item dropdown" style=" float: right;">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Area/City
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href=" {{route('area')}}">Area</a>
                     <a class="dropdown-item" href="{{route('city')}}">City</a>
+                    <a class="dropdown-item" href="{{route('show')}}">Show</a>
 
                 </div>
             </li>

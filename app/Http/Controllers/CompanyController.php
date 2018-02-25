@@ -24,7 +24,6 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -52,9 +51,10 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $company = Company::all();
+        return view('layouts.company.registred_companies',['company'=>$company]);
     }
 
     /**
@@ -75,9 +75,15 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $company = Company::find($request->input('id'));
+        $company->address = $request->input('address');
+        $company->phone_no = $request->input('phone');
+        $company->mobile_no = $request->input('mobile');
+        $company->fax_no = $request->input('fax');
+        $company->save();
+        return redirect()->route('viewcompanies');
     }
 
     /**
@@ -88,6 +94,8 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $company = Company::find($id);
+        $company->delete();
+        return back();
     }
 }

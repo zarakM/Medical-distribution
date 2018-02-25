@@ -8,7 +8,7 @@ class Salesman extends Model
 {
     protected $fillable =['name','mobileNo'];
 
-    public function Area()
+    public function area()
     {
         return $this->belongsTo(Area::class);
     }

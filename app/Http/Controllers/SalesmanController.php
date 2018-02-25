@@ -51,9 +51,10 @@ class SalesmanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $salesman = Salesman::with('area')->get();
+        return view('layouts.saleman.view_saleman',['salesman'=>$salesman]);
     }
 
     /**
@@ -74,10 +75,16 @@ class SalesmanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $salesman = Salesman::find($request->input('id'));
+        $salesman->mobile_no = $request->input('Mobile');
+        $area = Area::where('name',$request->input('Area'))->first();
+        $salesman->area()->associate($area);
+        $salesman->save();
+        return redirect()->route('viewsaleman');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -87,6 +94,8 @@ class SalesmanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $salesman = Salesman::find($id);
+        $salesman->delete();
+        return back();
     }
 }

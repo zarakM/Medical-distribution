@@ -53,9 +53,10 @@ class StockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $stock = Stock::with('product_detail')->get();
+        return view('layouts.stock.available_stock', ['stock'=>$stock]);
     }
 
     /**
@@ -76,9 +77,14 @@ class StockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $stock = Stock::find($request->input('id'));
+        $stock->quantity = $request->input('quantity');
+        $stock->retail_price = $request->input('trade');
+        $stock->trade_price = $request->input('retail');
+        $stock->save();
+        return redirect()->route('viewstock');
     }
 
     /**
@@ -89,6 +95,8 @@ class StockController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $stock = Stock::find($id);
+        $stock->delete();
+        return back();
     }
 }

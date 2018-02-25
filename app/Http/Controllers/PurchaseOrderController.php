@@ -24,9 +24,10 @@ class PurchaseOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $purchaseOrder = PurchaseOrder::find($request->input('id'));
+        return view('layouts.orders.company_order_list',['order1'=>$purchaseOrder]);
     }
 
     /**
@@ -37,20 +38,44 @@ class PurchaseOrderController extends Controller
      */
     public function store(Request $request)
     {
+        if (($request->input('more'))=="details"){
         $companyName= Company::where('name',$request->input('company_name'))->first();
         $productDetail= ProductDetail::where('batch_no',$request->input('batch'))->first();
         $purchaseOrder= new PurchaseOrder();
         $purchaseOrder->company()->associate($companyName);
         $purchaseOrder->save();
-        $insertedId = $purchaseOrder->id;
+        return view('layouts.orders.company_order');
+        }
 
-        $f_purchaseOrder= PurchaseOrder::find($insertedId)->first();
+        if (($request->input('more'))=="no"){
+        $productDetail= ProductDetail::where('batch_no',$request->input('batch'))->first();
+        $insId = PurchaseOrder::all()->last()->id;
+        $f_purchaseOrder= PurchaseOrder::find($insId);
+
         $quantity= $request->input('quantity');
         $trade_price= $request->input('trade');
         $retail_price= $request->input('retail');
         $bonus= $request->input('bonus');
+        
         $f_purchaseOrder->product_details()->attach($productDetail->id,['quantity'=>$quantity,'trade_price'=>$trade_price,'retail_price'=>$retail_price,'bonus'=>$bonus]);
         $f_purchaseOrder->save();
+        return view('index');
+    }
+
+        if (($request->input('more'))=="yes"){
+        $productDetail= ProductDetail::where('batch_no',$request->input('batch'))->first();
+        $insId = PurchaseOrder::all()->last()->id;
+        $f_purchaseOrder= PurchaseOrder::find($insId);
+
+        $quantity= $request->input('quantity');
+        $trade_price= $request->input('trade');
+        $retail_price= $request->input('retail');
+        $bonus= $request->input('bonus');
+        
+        $f_purchaseOrder->product_details()->attach($productDetail->id,['quantity'=>$quantity,'trade_price'=>$trade_price,'retail_price'=>$retail_price,'bonus'=>$bonus]);
+        $f_purchaseOrder->save();
+        return view('layouts.orders.company_order');
+        }
     }
 
     /**
@@ -59,9 +84,10 @@ class PurchaseOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $purchaseOrder = PurchaseOrder::with('company')->get();
+        return view('layouts.orders.view_company_order',['order'=>$purchaseOrder]);
     }
 
     /**
@@ -72,7 +98,7 @@ class PurchaseOrderController extends Controller
      */
     public function edit($id)
     {
-        //
+        // 
     }
 
     /**
@@ -82,9 +108,20 @@ class PurchaseOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $purchaseOrder = PurchaseOrder::find($request->input('id'));
+
+        $quantity= $request->input('quantity');
+        $trade_price= $request->input('trade');
+        $retail_price= $request->input('retail');
+        $bonus= $request->input('bonus');
+        $ids= $request->input('ids');
+
+        $purchaseOrder->product_details()->updateExistingPivot($ids,['quantity'=>$quantity,'trade_price'=>$trade_price,'retail_price'=>$retail_price,'bonus'=>$bonus]);
+
+        return redirect()->route('viewCompanyOrder');
+
     }
 
     /**
@@ -93,8 +130,10 @@ class PurchaseOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $PurchaseOrder = PurchaseOrder::find($request->input('id'));
+        $PurchaseOrder->product_details()->detach($request->input('ids'));
+        return back();
     }
 }

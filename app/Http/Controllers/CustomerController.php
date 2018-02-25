@@ -54,9 +54,10 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $customer = Customer::with('area')->get();
+        return view('layouts.customer.customer_list',['customer'=>$customer]);
     }
 
     /**
@@ -77,9 +78,14 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $customer = Customer::find($request->input('id'));
+        $customer->address = $request->input('address');
+        $customer->phone_no = $request->input('phone');
+        $customer->mobile_no = $request->input('mobile');
+        $customer->save();
+        return redirect()->route('viewcustomer');
     }
 
     /**
@@ -90,6 +96,8 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $customer= Customer::find($id);
+        $customer->delete();
+        return back();
     }
 }

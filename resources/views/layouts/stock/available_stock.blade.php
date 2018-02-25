@@ -1,49 +1,37 @@
 @include('layouts.master')
-
+<br>
 @yield('content')
-<div class="container">
-    <div class="row">
-
-        <h4>Remaining Stocks</h4>
-
-        <table class="table table-striped">
-            <thead class="thead-default">
-            <tr>
-                <th>#</th>
-                <th>Product Name</th>
-                <th>Quantity</th>
-                <th>Trade Price</th>
-                <th>Retail Price</th>
-                <th>Edit/Delete</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>0321-8187324</td>
-                <td><button type="button" class="btn btn-danger">X</button> <button type="button" class="btn btn-secondary">Edit</button></td>
-
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>0321-8187324</td>
-                <td><button type="button" class="btn btn-danger">X</button> <button type="button" class="btn btn-secondary">Edit</button></td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-                <td>0321-8187324</td>
-                <td><button type="button" class="btn btn-danger">X</button> <button type="button" class="btn btn-secondary">Edit</button></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+<div class="container-fluid">
+    <h4>Remaining Stocks</h4>
+<br>    <table class="table table-striped">
+        <thead class="thead-default">
+        <tr>
+            <th>Batch no</th>
+            <th>Quantity</th>
+            <th>Trade Price</th>
+            <th>Retail Price</th>
+        <th>Delete</th>
+        <th>Edit</th>            </tr>
+        </thead>
+        <tbody>
+            @foreach($stock as $data)
+        <tr>
+            <td>{{$data->product_detail->batch_no}}</td>
+            <td>{{$data->quantity}}</td>
+            <td>{{$data->trade_price}}</td>
+            <td>{{$data->retail_price}}</td>
+            <td style="width: 100px"><a class="btn btn-danger" href="{{route('destroy_stock',['id'=>$data->id])}}">Delete</a></td>
+        <td style="width: 100px">
+            <form action="{{route('update_view_stock')}}">
+                <input type="text" name="id" hidden="yes" value="{{$data->id}}">
+                <input type="text" name="batch" hidden="yes" value="{{$data->product_detail->batch_no}}">
+                <input type="text" name="quantity" hidden="yes" value="{{$data->quantity}}">
+                <input type="text" name="trade" hidden="yes" value="{{$data->trade_price}}">
+                <input type="text" name="retail" hidden="yes" value="{{$data->retail_price}}">
+                <input class="btn btn-warning text-white" type="submit" value="Edit">
+            </form></td>
+        </tr>
+        @endforeach
+        </tbody>
+    </table>
 </div>
