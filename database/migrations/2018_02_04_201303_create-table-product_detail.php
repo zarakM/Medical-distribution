@@ -9,16 +9,16 @@ class CreateTableProductDetail extends Migration
     /**
      * Run the migrations.
      *
-     * @return void
+     * @return void 
      */
     public function up()
     {
         Schema::create('product_details', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('batch_no',50)->unique();
+            $table->string('pack');
             $table->string('strength');
-            $table->integer('pack');
-            $table->string('expiry');
+            $table->integer('trade_price');
+            $table->integer('retail_price');
             $table->integer('product_id');
             $table->timestamps();
         });
@@ -31,6 +31,6 @@ class CreateTableProductDetail extends Migration
      */
     public function down()
     {
-        Schema::drop('product_Details');
+        Schema::drop('product_details');
     }
 }

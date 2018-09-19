@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Company;
 use App\ProductDetail;
+use App\Product;
+use App\Stock;
 use App\PurchaseOrder;
 
 class PurchaseOrderController extends Controller
@@ -30,9 +32,23 @@ class PurchaseOrderController extends Controller
         return view('layouts.orders.company_order_list',['order1'=>$purchaseOrder]);
     }
 
+
+    
+
+    public function search_product(Request $request)
+    {
+        $query = $request->term;
+        $posts = City::where('name','LIKE','%'.$query.'%')->get();
+
+        foreach ($posts as $data) {
+            $datas[] = $data['name'];
+        }
+
+        return response()->json($datas);
+    }
+
     /**
      * Store a newly created resource in storage.
-     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -40,7 +56,7 @@ class PurchaseOrderController extends Controller
     {
         if (($request->input('more'))=="details"){
         $companyName= Company::where('name',$request->input('company_name'))->first();
-        $productDetail= ProductDetail::where('batch_no',$request->input('batch'))->first();
+        $productDetail= Product::where('code',$request->input('code'))->first();
         $purchaseOrder= new PurchaseOrder();
         $purchaseOrder->company()->associate($companyName);
         $purchaseOrder->save();
@@ -48,31 +64,41 @@ class PurchaseOrderController extends Controller
         }
 
         if (($request->input('more'))=="no"){
-        $productDetail= ProductDetail::where('batch_no',$request->input('batch'))->first();
+        $product=Product::where('code',$request->input('code'))->first();
+        $productDetail= ProductDetail::where('product_id',$product->id)->first();
         $insId = PurchaseOrder::all()->last()->id;
         $f_purchaseOrder= PurchaseOrder::find($insId);
 
+        $expiry= $request->input('expiry');
+        $batch_no= $request->input('batch_no');
         $quantity= $request->input('quantity');
         $trade_price= $request->input('trade');
         $retail_price= $request->input('retail');
         $bonus= $request->input('bonus');
         
-        $f_purchaseOrder->product_details()->attach($productDetail->id,['quantity'=>$quantity,'trade_price'=>$trade_price,'retail_price'=>$retail_price,'bonus'=>$bonus]);
+        
+        $cost= ($product->stock->trade_price)*$quantity;
+        
+        $f_purchaseOrder->product_details()->attach($productDetail->id,['quantity'=>$quantity,'batch_no'=>$batch_no ,'expiry'=>$expiry ,'disc'=>$trade_price,'net'=>$retail_price,'bonus'=>$bonus,'total'=>$cost]);
         $f_purchaseOrder->save();
         return view('index');
-    }
+    }   
 
         if (($request->input('more'))=="yes"){
-        $productDetail= ProductDetail::where('batch_no',$request->input('batch'))->first();
+        $product=Product::where('code',$request->input('code'))->first();
+        $productDetail= ProductDetail::where('product_id',$product->id)->first();
         $insId = PurchaseOrder::all()->last()->id;
         $f_purchaseOrder= PurchaseOrder::find($insId);
-
+        
+        $expiry= $request->input('expiry');
+        $batch_no= $request->input('batch_no');
         $quantity= $request->input('quantity');
         $trade_price= $request->input('trade');
         $retail_price= $request->input('retail');
         $bonus= $request->input('bonus');
+        $cost= ($product->stock->trade_price)*$quantity;
         
-        $f_purchaseOrder->product_details()->attach($productDetail->id,['quantity'=>$quantity,'trade_price'=>$trade_price,'retail_price'=>$retail_price,'bonus'=>$bonus]);
+        $f_purchaseOrder->product_details()->attach($productDetail->id,['quantity'=>$quantity,'batch_no'=>$batch_no ,'expiry'=>$expiry ,'disc'=>$trade_price,'net'=>$retail_price,'bonus'=>$bonus,'total'=>$cost]);
         $f_purchaseOrder->save();
         return view('layouts.orders.company_order');
         }
@@ -86,8 +112,12 @@ class PurchaseOrderController extends Controller
      */
     public function show()
     {
-        $purchaseOrder = PurchaseOrder::with('company')->get();
-        return view('layouts.orders.view_company_order',['order'=>$purchaseOrder]);
+        $purchaseOrder = PurchaseOrder::all();
+        $product = Product::with(['product_details','stock'])->get();
+        $stock = Stock::all();
+        return view('layouts.orders.view_company_order')
+        ->with('order',$purchaseOrder)
+        ->with('product',$product);
     }
 
     /**

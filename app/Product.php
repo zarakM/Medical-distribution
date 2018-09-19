@@ -6,10 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['code','name'];
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+    public function strength()
+    {
+        return $this->hasMany(Strength::class);
+    }
 
     public function product_details()
     {
-        return $this->hasMany(ProductDetail::class);
+        return $this->hasOne(ProductDetail::class);
+    }
+
+    public function stock()
+    {
+        return $this->hasOne(Stock::class);
     }
 }

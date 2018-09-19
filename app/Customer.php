@@ -13,6 +13,11 @@ class Customer extends Model
         return $this->belongsTo(Area::class);
     }
 
+    public function customer_typo()
+    {
+        return $this->belongsTo(CustomerTypo::class,'customer_type_id');
+    }
+
     public function customer_orders()
     {
         return $this->hasMany(CustomerOrder::class);

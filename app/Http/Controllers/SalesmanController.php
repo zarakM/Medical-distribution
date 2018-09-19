@@ -28,6 +28,18 @@ class SalesmanController extends Controller
         //
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->term;
+        $posts = Salesman::where('name','LIKE','%'.$query.'%')->get();
+
+        foreach ($posts as $data) {
+            $datas[] = $data['name'];
+        }
+
+        return response()->json($datas);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

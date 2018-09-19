@@ -1,12 +1,13 @@
 <?php
 
 namespace App;
+use App\ProductDetail;
 
 use Illuminate\Database\Eloquent\Model;
 
 class PurchaseOrder extends Model
 {
-    protected $fillable = ['quantity','tradePrice','expiry','bonus','batch'];
+    protected $fillable = ['quantity','batch_no','expiry','disc','net','bonus','total'];
 
     public function company()
     {
@@ -14,6 +15,6 @@ class PurchaseOrder extends Model
     }
     public function product_details()
     {
-		return $this->belongsToMany(ProductDetail::class, 'purchase_order_product_detail','purchase_order_id','product_detail_id')->withPivot('quantity','retail_price','trade_price','bonus')->withTimestamps();
+		return $this->belongsToMany('App\ProductDetail', 'purchase_order_product_detail','purchase_order_id','product_detail_id')->withPivot('quantity','batch_no','expiry','disc','net','bonus','total')->withTimestamps();
     }
 }

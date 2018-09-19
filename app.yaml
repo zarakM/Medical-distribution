@@ -1,0 +1,27 @@
+runtime: php
+env: flex
+
+runtime_config:
+  document_root: public
+
+# Ensure we skip ".env", which is only for local development
+skip_files:
+  - .env
+
+env_variables:
+  APP_LOG: errorlog
+  APP_KEY: base64:nzJxoY7H7WayXTYEj7bdAuWHNBzE1yHEiSziEgBRhlY=
+  STORAGE_DIR: /tmp
+  APP_DEBUG: true
+  CACHE_DRIVER: database
+  SESSION_DRIVER: database
+  DB_CONNECTION: mysql
+  DB_HOST: 127.0.0.1
+  DB_PORT: 3306
+  DB_DATABASE: medical
+  DB_USERNAME: medical
+  DB_PASSWORD: zarak123
+  DB_SOCKET:  "/cloudsql/zarsh-95:asia-south1:zarsh"
+
+beta_settings:
+  cloud_sql_instances: "zarsh-95:asia-south1:zarsh"

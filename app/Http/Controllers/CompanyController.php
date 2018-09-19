@@ -26,6 +26,28 @@ class CompanyController extends Controller
     {
     }
 
+    public function search_o()
+    {
+        $posts = Company::all();
+
+        foreach ($posts as $data) {
+            $datas[] = $data['name'];
+        }
+
+        echo json_encode($datas);
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->term;
+        $posts = Company::where('name','LIKE','%'.$query.'%')->get();
+
+        foreach ($posts as $data) {
+            $datas[] = $data['name'];
+        }
+
+        return response()->json($datas);
+    }
     /**
      * Store a newly created resource in storage.
      *

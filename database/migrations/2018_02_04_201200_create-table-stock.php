@@ -15,10 +15,12 @@ class CreateTableStock extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('batch_no',50);
             $table->integer('quantity');
-            $table->integer('trade_price');
-            $table->integer('retail_price');
-            $table->integer('product_detail_id');
+            $table->integer('disc');
+            $table->integer('net');
+            $table->string('expiry');
+            $table->integer('product_id');
             $table->timestamps();
         });
     }

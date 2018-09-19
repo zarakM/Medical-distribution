@@ -1,4 +1,31 @@
 @include('layouts.master')
+
+<script src="{{asset('js/jquery.js')}}"></script>
+<script src="{{asset('js/jquery-ui.js')}}"></script>
+
+<script type="text/javascript">
+$(function()
+{
+$("#codex").autocomplete({
+source: '{{route("search_batch")}}'
+});
+});
+
+$(function()
+{
+$("#naam").autocomplete({
+source: '{{route("search_batch")}}'
+});
+});
+
+$(function()
+{
+$("#comp").autocomplete({
+source: '{{route("search_batch")}}'
+});
+});
+</script>
+
 <br>
 <div class="container">
     <div class="row">
@@ -6,14 +33,23 @@
     </div>
 </div>
 <br>
+
 <div class="container">
- 
 
  <form method="post" action="{{route('save_stock')}}">
   <div class="form-group row">
-    <label for="inputEmail3" class="col-sm-2 col-form-label">Batch no</label>
+    <label for="inputEmail3" class="col-sm-2 col-form-label">Codex</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="Batch" placeholder="Name">
+      <input type="text" class="form-control" id="codex" name="codex" placeholder="Name">
+    </div>
+  </div>
+
+
+
+  <div class="form-group row">
+    <label for="inputEmail3" class="col-sm-2 col-form-label">Batch_no</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="batch" name="batch" placeholder="Batch">
     </div>
   </div>
 
@@ -25,16 +61,23 @@
   </div>
 
     <div class="form-group row">
-    <label for="inputPassword3" class="col-sm-2 col-form-label">Trade price</label>
+    <label for="inputPassword3" class="col-sm-2 col-form-label">Discount</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="Trade" placeholder="Trade">
+      <input type="number" class="form-control" name="Discount" placeholder="Discount">
     </div>
   </div>
 
     <div class="form-group row">
-    <label for="inputPassword3" class="col-sm-2 col-form-label">Retail Price</label>
+    <label for="inputPassword3" class="col-sm-2 col-form-label">Net</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="Retail" placeholder="Retail">
+      <input type="number" class="form-control" name="Net" placeholder="Net">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="inputPassword3" class="col-sm-2 col-form-label">Expiry</label>
+    <div class="col-sm-10">
+      <input type="date" class="form-control" name="Expiry" placeholder="Expiry">
     </div>
   </div>
   {{csrf_field()}}

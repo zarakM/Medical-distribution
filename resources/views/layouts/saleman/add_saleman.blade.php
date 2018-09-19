@@ -1,4 +1,17 @@
 @include('layouts.master')
+
+<script src="{{asset('js/jquery.js')}}"></script>
+<script src="{{asset('js/jquery-ui.js')}}"></script>
+
+<script type="text/javascript">
+$(function()
+{
+$("#area").autocomplete({
+source: '{{route("search_area")}}'
+});
+});
+</script>
+
 <br>
 <div class="container">
     <div class="row">
@@ -27,7 +40,7 @@
     <div class="form-group row">
     <label for="inputPassword3" class="col-sm-2 col-form-label">Area name</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="Area" placeholder="area">
+      <input type="text" class="form-control" id="area" name="Area" placeholder="area">
     </div>
   </div>
   {{csrf_field()}}

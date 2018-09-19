@@ -1,4 +1,17 @@
 @include('layouts.master')
+
+<script src="{{asset('js/jquery.js')}}"></script>
+<script src="{{asset('js/jquery-ui.js')}}"></script>
+
+<script type="text/javascript">
+$(function()
+{
+$("#batch").autocomplete({
+source: '{{route("search_product")}}'
+});
+});
+</script>
+
 <br>
 <div class="container">
     <div class="row">
@@ -14,7 +27,7 @@
   <div class="form-group row">
     <label for="inputPassword3" class="col-sm-2 col-form-label">Batch No</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="batch" value="{{ $_GET['batch'] }}" disabled>
+      <input type="text" class="form-control" id="batch" name="batch" value="{{ $_GET['batch'] }}" disabled>
     </div>
   </div>
 

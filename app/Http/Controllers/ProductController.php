@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
+use App\Company;
+use App\Strength;
 use App\ProductDetail;
 
 class ProductController extends Controller
@@ -28,6 +30,28 @@ class ProductController extends Controller
         //
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->term;
+        $posts = ProductDetail::where('code','LIKE','%'.$query.'%')->get();
+
+        foreach ($posts as $data) {
+            $datas[] = $data['code'];
+        }
+        return response()->json($datas);
+    }
+
+    public function search_name(Request $request)
+    {
+        $query = $request->term;
+        $posts = Product::where('name','LIKE','%'.$query.'%')->get();
+
+        foreach ($posts as $data) {
+            $datas[] = $data['name'];
+        }
+        return response()->json($datas);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -36,23 +60,24 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $companyName= Company::where('name',$request->input('company_name'))->first();
+        
         $product = new Product();
         $product->name = $request->input('Name');
+        $product->company()->associate($companyName);
         $product->save();
 
         $productDetail = new ProductDetail();
-        $productDetail->batch_no = $request->input('Batch');
-        $productDetail->strength = $request->input('Strength');
         $productDetail->pack = $request->input('Pack');
-        $productDetail->expiry = $request->input('Expiry');
+        $productDetail->pack = $request->input('strength');
+        $productDetail->trade_price = $request->input('trade');
+        $productDetail->retail_price = $request->input('retail');
 
-        $f_product = Product::where('name',$request->input('Name'))->first();
+        $f_product = Product::where('code',$request->input('code'))->first();
         $productDetail->product()->associate($f_product);
         $productDetail->save();
 
         return view('layouts.products.add_product');
-
-
     }
 
     /**
@@ -73,9 +98,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        //
+        $product = ProductDetail::with('product')->get();
+        return view('layouts.products.add_product',['product'=>$product]);
     }
 
     /**

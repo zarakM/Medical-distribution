@@ -1,5 +1,24 @@
 @include('layouts.master')
 
+<script src="{{asset('js/jquery.js')}}"></script>
+<script src="{{asset('js/jquery-ui.js')}}"></script>
+
+<script type="text/javascript">
+$(function()
+{
+$("#company").autocomplete({
+source: '{{route("search_customer")}}'
+});
+});
+</script>
+<script type="text/javascript">
+$(function()
+{
+$("#salesman").autocomplete({
+source: '{{route("search_salesman")}}'
+});
+});
+</script>
 <br>
 <div class="container">
 <h4> Customer Order</h4> 
@@ -9,14 +28,14 @@
   <div class="form-group row">
     <label for="inputEmail3" class="col-sm-2 col-form-label">Customer Name</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="customer_name" placeholder="Customer">
+      <input type="text" class="form-control" id="company" name="customer_name" placeholder="Customer">
     </div>
   </div>
 
   <div class="form-group row">
     <label for="inputEmail3" class="col-sm-2 col-form-label">Salesman Name</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="salesman_name" placeholder="Salesman">
+      <input type="text" class="form-control" id="salesman" name="salesman_name" placeholder="Salesman">
     </div>
   </div>
   {{csrf_field()}}

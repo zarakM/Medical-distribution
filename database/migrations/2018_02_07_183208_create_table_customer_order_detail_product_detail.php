@@ -18,9 +18,10 @@ class CreateTableCustomerOrderDetailProductDetail extends Migration
             $table->integer('customer_order_detail_id');
             $table->integer('product_detail_id');
             $table->integer('quantity');
-            $table->integer('retail_price');
-            $table->integer('trade_price');
+            $table->integer('disc');
+            $table->integer('net');
             $table->string('bonus');
+            $table->integer('total');
             $table->timestamps();
         });
     }

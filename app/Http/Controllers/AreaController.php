@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class AreaController extends Controller
 {
-    /**
+    /*a
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -35,7 +35,7 @@ class AreaController extends Controller
      */
     public function store(Request $request)
     {
-        $city = City::where('name',$request->input('City_name'))->first();
+        $city = City::where('name',$request->input('city'))->first();
         $area = new Area();
         $area->name = $request->input('Name');
         $area->timestamps=false;
@@ -55,6 +55,18 @@ class AreaController extends Controller
         $area =City::with('areas')->get();
         return view('layouts.showAllArea',['area'=>$area]);
     
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->term;
+        $posts = Area::where('name','LIKE','%'.$query.'%')->get();
+
+        foreach ($posts as $data) {
+            $datas[] = $data['name'];
+        }
+
+        return response()->json($datas);
     }
 
     /**

@@ -17,10 +17,13 @@ class CreateTablePurchaseOrderProductDetail extends Migration
             $table->increments('id');
             $table->integer('purchase_order_id');
             $table->integer('product_detail_id');
+            $table->string('batch_no',50);
+            $table->string('expiry');
             $table->integer('quantity');
-            $table->integer('retail_price');
-            $table->integer('trade_price');
+            $table->integer('disc')->nullable()->default(0);
+            $table->integer('net')->nullable()->default(0);
             $table->string('bonus');
+            $table->integer('total');
             $table->timestamps();
         });
     }

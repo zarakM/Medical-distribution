@@ -26,18 +26,14 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href=" {{route('addproducts')}}">Add Products</a>
                     <a class="dropdown-item" href="{{route('viewproducts')}}">View Products</a>
+                    <a class="dropdown-item" href="{{route('addstrength')}}">Add strength</a>
 
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Stocks
+                    View Stocks
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href=" {{route('addstock')}}">Add Stock</a>
-                    <a class="dropdown-item" href="{{route('viewstock')}}">View Stocks</a>
-
-                </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

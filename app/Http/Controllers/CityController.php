@@ -41,6 +41,18 @@ class CityController extends Controller
         return view('layouts.city');
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->term;
+        $posts = City::where('name','LIKE','%'.$query.'%')->get();
+
+        foreach ($posts as $data) {
+            $datas[] = $data['name'];
+        }
+
+        return response()->json($datas);
+    }
+
     /**
      * Display the specified resource.
      *

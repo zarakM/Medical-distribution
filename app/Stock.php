@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Model
 {
-    protected $fillable= ['quantity','retail_price','trade_price'];
+    protected $fillable= ['batch_no','quantity','disc','net','expiry'];
 
-    public function product_detail()
+    public function product()
     {
-        return $this->belongsTo(ProductDetail::class);
+        return $this->belongsTo(Product::class);
     }
 }

@@ -8,9 +8,9 @@
         <thead class="thead-default">
         <tr>
             <th>Name</th>
-            <td>Mobile no</td>
+            <th>Mobile no</th>
             <th>Area</th>
-                        <th>Delete</th>
+            <th>Delete</th>
             <th>Edit</th>
         </tr>
         </thead>

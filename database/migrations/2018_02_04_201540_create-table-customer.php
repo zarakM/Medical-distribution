@@ -19,7 +19,9 @@ class CreateTableCustomer extends Migration
             $table->string('address');
             $table->string('phone_no');
             $table->string('mobile_no');
-            $table->string('area_id')->default(0);
+            $table->integer('area_id')->default(0);
+            $table->integer('customer_type_id')->default(0);
+            $table->integer('opening_balance')->default(0);
             $table->timestamps();
         });
 

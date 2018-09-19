@@ -8,6 +8,8 @@ use App\CustomerOrder;
 use App\CustomerOrderDetail;
 use App\Salesman;
 use App\ProductDetail;
+use App\Product;
+use App\Stock;
 
 class CustomerOrderController extends Controller
 {
@@ -29,6 +31,18 @@ class CustomerOrderController extends Controller
     public function create(Request $request)
     {
         
+    }
+
+    public function search_product(Request $request)
+    {
+        $query = $request->term;
+        $posts = City::where('name','LIKE','%'.$query.'%')->get();
+
+        foreach ($posts as $data) {
+            $datas[] = $data['name'];
+        }
+
+        return response()->json($datas);
     }
 
     /**
@@ -58,31 +72,38 @@ class CustomerOrderController extends Controller
         
         if (($request->input('more'))=="yes")
         {
-        $productDetail= ProductDetail::where('batch_no',$request->input('batch'))->first();
+        $product=Product::where('code',$request->input('code'))->first();
+        $productDetail= ProductDetail::where('product_id',$product->id)->first();
 
         $insId = CustomerOrderDetail::all()->last()->id;
         $f_customerDetail = CustomerOrderDetail::find($insId);
         $quantity= $request->input('quantity');
-        $trade_price= $request->input('trade');
-        $retail_price= $request->input('retail');
+        $trade_price= $request->input('Disc');
+        $retail_price= $request->input('net');
         $bonus= $request->input('bonus');
-        $f_customerDetail->product_details()->attach($productDetail->id,['quantity'=>$quantity,'trade_price'=>$trade_price,'retail_price'=>$retail_price,'bonus'=>$bonus]);
+
+                $cost= ($product->stock->retail_price)*$quantity;
+        
+        $f_customerDetail->product_details()->attach($productDetail->id,['quantity'=>$quantity,'disc'=>$trade_price,'net'=>$retail_price,'bonus'=>$bonus,'total'=>$cost]);
         $f_customerDetail->save();
         return view('layouts.orders.customer_order');
         }
         if (($request->input('more'))=="no")
         {
-            $productDetail= ProductDetail::where('batch_no',$request->input('batch'))->first();
-
+        $product=Product::where('code',$request->input('code'))->first();
+        $productDetail= ProductDetail::where('product_id',$product->id)->first();
         $insId = CustomerOrderDetail::all()->last()->id;
         $f_customerDetail = CustomerOrderDetail::find($insId);
         $quantity= $request->input('quantity');
-        $trade_price= $request->input('trade');
-        $retail_price= $request->input('retail');
+        $trade_price= $request->input('Disc');
+        $retail_price= $request->input('net');
         $bonus= $request->input('bonus');
-        $f_customerDetail->product_details()->attach($productDetail->id,['quantity'=>$quantity,'trade_price'=>$trade_price,'retail_price'=>$retail_price,'bonus'=>$bonus]);
+        
+                $cost= ($product->stock->retail_price)*$quantity;
+        
+        $f_customerDetail->product_details()->attach($productDetail->id,['quantity'=>$quantity,'disc'=>$trade_price,'net'=>$retail_price,'bonus'=>$bonus,'total'=>$cost]);
         $f_customerDetail->save();
-            return view('index');
+        return view('index');
         }
     }
 
@@ -95,7 +116,8 @@ class CustomerOrderController extends Controller
     public function show()
     {
         $cOrder = CustomerOrderDetail::all();
-        return view('layouts.orders.view_customer_order',['order'=>$cOrder]);
+        $product = Product::with(['product_details','stock'])->get();
+        return view('layouts.orders.view_customer_order')->with('order',$cOrder)->with('product',$product);
     }
 
     /**

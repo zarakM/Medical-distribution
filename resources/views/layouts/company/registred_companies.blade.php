@@ -13,7 +13,6 @@
             <th>Phone</th>
             <th>Mobile</th>
             <th>FAX</th>
-            <th>Delete</th>
             <th>Edit</th>
         </tr>
         </thead>
@@ -25,7 +24,6 @@
             <td>{{$data->phone_no}}</td>
             <td>{{$data->mobile_no}}</td>
             <td >{{$data->fax_no}}</td>
-             <td style="width: 100px"><a class="btn btn-danger" href="{{route('destroy_company',['id'=>$data->id])}}">Delete</a></td>
             <td style="width: 100px">
                 <form action="{{route('update_view_company')}}">
                 <input type="text" name="id" hidden="yes" value="{{$data->id}}">

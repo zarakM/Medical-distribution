@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Customer;
+use App\CustomerTypo;
 use App\Area;
 
 class CustomerController extends Controller
@@ -27,7 +28,6 @@ class CustomerController extends Controller
     {
         //
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -37,12 +37,15 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $area = Area::where('name',$request->input('Area'))->first();
+        $type = CustomerTypo::where('name',$request->input('type'))->first();
         $customer = new Customer();
         $customer->name = $request->input('Name');
         $customer->address = $request->input('Address');
         $customer->phone_no = $request->input('Phone');
         $customer->mobile_no = $request->input('Mobile');
+        $customer->opening_balance = $request->input('opening');
         $customer->area()->associate($area);
+        $customer->customer_typo()->associate($type);
         $customer->save();
 
         return view('layouts.customer.add_customer');
@@ -58,6 +61,17 @@ class CustomerController extends Controller
     {
         $customer = Customer::with('area')->get();
         return view('layouts.customer.customer_list',['customer'=>$customer]);
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->term;
+        $posts = Customer::where('name','LIKE','%'.$query.'%')->get();
+
+        foreach ($posts as $data) {
+            $datas[] = $data['name'];
+        }
+        return response()->json($datas);
     }
 
     /**
